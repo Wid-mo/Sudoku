@@ -9,6 +9,8 @@ public:
 	Sudoku() {initSudoku(); };
 	void printSudoku();
 	void solveSudoku();
+	bool checkCorrectness();
+	Sudoku copy();
 
 private:
 	void initSudoku();

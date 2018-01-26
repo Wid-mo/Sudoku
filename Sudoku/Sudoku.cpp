@@ -67,6 +67,30 @@ void Sudoku::solveSudoku() {
 
 }
 
+bool Sudoku::checkCorrectness()
+{
+	Sudoku s2;
+	s2.copy();
+	s2.solveSudoku();
+
+	for (int i = 0; i < 9; i++)
+		for (int j = 0; j < 9; j++)
+			if (this->table[i][j] != s2.table[i][j])
+				return false;
+
+	return true;
+}
+
+Sudoku Sudoku::copy()
+{
+	Sudoku temp;
+	for (int i = 0; i < 9; i++)
+		for (int j = 0; j < 9; j++)
+			temp.table[i][j] = this->table[i][j];
+
+	return temp;
+}
+
 bool Sudoku::isValid(int x, int y, int val) {
 
 	return notInTheSameRow(y,val) && notInTheSameColumn(x,val) && notInTheSameSquare(x - x%3,y - y%3,val);
