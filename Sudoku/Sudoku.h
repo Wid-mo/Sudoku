@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 class Sudoku {
 	
@@ -14,7 +15,7 @@ public:
 
 private:
 	void initSudoku();
-	void fillBoard();
+	void fillBoard(std::vector<int> doOdwiedzenia);
 	void deleteSomeFieldsFromBoard();
 
 	bool isValid(int x, int y, int val);

@@ -2,18 +2,64 @@
 #include "Sudoku.h"
 #include <cstdlib>
 #include <time.h>
+#include <vector>
 
 using namespace std;
 
 void Sudoku::initSudoku() {
 
 	memset(this->table, 0, sizeof(this->table));
-	srand(time(NULL));
 
-	fillBoard();
+	srand(time(NULL));
+	vector<int> doOdwiedzenia;
+	for (int i = 0; i < 81; i++)
+		doOdwiedzenia.push_back(i);
+	fillBoard(doOdwiedzenia);
+
 	deleteSomeFieldsFromBoard();
 }
 
+void Sudoku::fillBoard(vector<int> doOdwiedzenia)
+{
+	
+	vector<int> kolejnedostartu;
+	kolejnedostartu = doOdwiedzenia;
+
+	for (int i = 0; i < kolejnedostartu.size(); i++) {
+
+		int los = rand() % kolejnedostartu.size();
+		int indexValue = kolejnedostartu[los];
+
+		kolejnedostartu.erase(kolejnedostartu.begin() + los);
+		
+		int x = indexValue % 9;
+		int y = indexValue / 9;
+		for (int k = 1; k <= 9; k++) {
+
+			if (isValid(x, y, k)) {
+				int eraseIndex = y * 9 + x;
+				int eraseValue = doOdwiedzenia[eraseIndex];
+
+				doOdwiedzenia.erase(doOdwiedzenia.begin() + eraseIndex);	// error
+				this->table[y][x] = k;
+
+				fillBoard(doOdwiedzenia);
+				if (doOdwiedzenia.size() == 0)
+					return;
+
+				this->table[y][x] = 0;
+				if (eraseIndex == doOdwiedzenia.size())
+					doOdwiedzenia.push_back(eraseValue);
+				else
+					doOdwiedzenia.insert(doOdwiedzenia.begin() + eraseIndex, eraseValue);
+
+				break;
+			}
+		}
+	}
+}
+
+/*
 void Sudoku::fillBoard() {
 	for (int i = 0; i < 81; i++) {
 
@@ -36,6 +82,7 @@ void Sudoku::fillBoard() {
 
 	}
 }
+*/
 
 void Sudoku::deleteSomeFieldsFromBoard() {
 
