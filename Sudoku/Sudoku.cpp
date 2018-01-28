@@ -27,20 +27,18 @@ void Sudoku::fillBoard(vector<int> doOdwiedzenia)
 
 	for (int i = 0; i < kolejnedostartu.size(); i++) {
 
-		int los = rand() % kolejnedostartu.size();
-		int indexValue = kolejnedostartu[los];
+		int losIndex = rand() % kolejnedostartu.size();
+		int losIndexValue = kolejnedostartu[losIndex];
 
-		kolejnedostartu.erase(kolejnedostartu.begin() + los);
+		kolejnedostartu.erase(kolejnedostartu.begin() + losIndex);
 		
-		int x = indexValue % 9;
-		int y = indexValue / 9;
+		int x = losIndexValue % 9;
+		int y = losIndexValue / 9;
 		for (int k = 1; k <= 9; k++) {
 
 			if (isValid(x, y, k)) {
-				int eraseIndex = y * 9 + x;
-				int eraseValue = doOdwiedzenia[eraseIndex];
-
-				doOdwiedzenia.erase(doOdwiedzenia.begin() + eraseIndex);	// error
+			
+				doOdwiedzenia.erase(doOdwiedzenia.begin() + losIndex);
 				this->table[y][x] = k;
 
 				fillBoard(doOdwiedzenia);
@@ -48,10 +46,10 @@ void Sudoku::fillBoard(vector<int> doOdwiedzenia)
 					return;
 
 				this->table[y][x] = 0;
-				if (eraseIndex == doOdwiedzenia.size())
-					doOdwiedzenia.push_back(eraseValue);
+				if (losIndex == doOdwiedzenia.size())
+					doOdwiedzenia.push_back(losIndexValue);
 				else
-					doOdwiedzenia.insert(doOdwiedzenia.begin() + eraseIndex, eraseValue);
+					doOdwiedzenia.insert(doOdwiedzenia.begin() + losIndex, losIndexValue);
 
 				break;
 			}
